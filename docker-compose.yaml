@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: marketplace-postgres
+    environment:
+      POSTGRES_DB: marketplace      # Эта БД создастся автоматически
+      POSTGRES_USER: postgre
+      POSTGRES_PASSWORD: bestuser
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d   # монтируем папку со скриптами
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgre -d marketplace"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    container_name: marketplace-keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak?sslMode=DISABLE
+      KC_DB_USERNAME: postgre
+      KC_DB_PASSWORD: bestuser
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    command: start-dev
+    depends_on:
+      postgres:
+        condition: service_healthy   # Keycloak запустится только после того, как PostgreSQL будет готов
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+#version: '3.8'
+
+#
+#services:
+#  postgres:
+#    image: postgres:15
+#    container_name: marketplace-postgres
+#    environment:
+#      POSTGRES_DB: marketplace
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: bestuser
+#    ports:
+#      - "5432:5432"
+##    volumes:
+##      - postgres-data:/var/lib/postgresql/data
+#
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:26.0.7
+#    container_name: marketplace-keycloak
+#    environment:
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+#      KC_DB: postgres
+#      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+#      KC_DB_USERNAME: postgres
+#      KC_DB_PASSWORD: bestuser
+#    ports:
+#      - "8080:8080"
+#    command: start-dev
+#    depends_on:
+#      - postgres
+##    volumes:
+##      - keycloak-data:/opt/keycloak/data
+#
+#volumes:
+#  postgres-data:
+#  keycloak-data:
