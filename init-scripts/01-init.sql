@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
     id BIGSERIAL PRIMARY KEY,
     keycloak_id VARCHAR(36) UNIQUE,
     email VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    username VARCHAR(255) UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -27,14 +29,14 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT,
     price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
     stock INTEGER DEFAULT 0 CHECK (stock >= 0),
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS orders (
     id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE SET NULL,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     address_id BIGINT REFERENCES addresses(id) ON DELETE SET NULL,
     status VARCHAR(50) DEFAULT 'CREATED',
     total_amount NUMERIC(10,2) DEFAULT 0,
@@ -47,7 +49,9 @@ CREATE TABLE IF NOT EXISTS addresses (
     street VARCHAR(255),
     city VARCHAR(100),
     postal_code VARCHAR(20),
-    country VARCHAR(100)
+    country VARCHAR(100),
+    address_type VARCHAR(20) NOT NULL CHECK (address_type IN ('HOME', 'PICKUP_POINT')),
+    pickup_point_id VARCHAR(100)
 );
 
 CREATE TABLE IF NOT EXISTS order_items (
