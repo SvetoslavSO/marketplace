@@ -1,16 +1,18 @@
 package org.svetso.marketplace_monolyth.auth.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import lombok.Setter;
+import org.svetso.marketplace_monolyth.BaseEntity;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,12 +31,4 @@ public class User {
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    private void onCreate(){
-        createdAt = LocalDateTime.now();
-    }
 }
