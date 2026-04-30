@@ -1,8 +1,8 @@
-package org.svetso.marketplace_monolyth.auth.repository;
+package org.svetso.marketplace_monolyth.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.svetso.marketplace_monolyth.auth.entity.User;
+import org.svetso.marketplace_monolyth.user.entity.User;
 
 import java.util.Optional;
 

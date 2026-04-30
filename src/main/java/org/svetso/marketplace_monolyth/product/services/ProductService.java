@@ -12,12 +12,11 @@ import org.svetso.marketplace_monolyth.product.dto.CreateProductDTO;
 import org.svetso.marketplace_monolyth.product.dto.ProductDTO;
 import org.svetso.marketplace_monolyth.product.dto.UpdateProductDTO;
 import org.svetso.marketplace_monolyth.product.entity.Product;
-import org.svetso.marketplace_monolyth.auth.entity.User;
-import org.svetso.marketplace_monolyth.auth.repository.UserRepository;
+import org.svetso.marketplace_monolyth.user.entity.User;
+import org.svetso.marketplace_monolyth.user.repository.UserRepository;
 import org.svetso.marketplace_monolyth.product.repository.CategoryRepository;
 import org.svetso.marketplace_monolyth.product.repository.ProductRepository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +98,6 @@ public class ProductService {
             product.setCategory(category);
         }
 
-        product.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product);
         log.info("User {} updates product {}", userId, product.getName());
         return productConverter(product);

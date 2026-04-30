@@ -1,4 +1,4 @@
-package org.svetso.marketplace_monolyth.auth.entity;
+package org.svetso.marketplace_monolyth.user.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

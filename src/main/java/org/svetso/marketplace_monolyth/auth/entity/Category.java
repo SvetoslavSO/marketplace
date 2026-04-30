@@ -2,16 +2,18 @@ package org.svetso.marketplace_monolyth.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
+import lombok.Setter;
+import org.svetso.marketplace_monolyth.BaseEntity;
 
 @Entity
 @Table(name = "categories")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

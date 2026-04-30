@@ -20,7 +20,7 @@ keycloak:
   realm: marketplace                        # имя Realm
   admin:
     client-id: admin-client   # клиент для управления пользователями
-    client-secret: 3UQdc1J1cshcYxAbHI09PluPq4SZ47aD   # скопируйте из Credentials этого клиента
+    client-secret: 0E9eZWyvUG9vzqgOeQzXO4mPIeGIQNGs  # скопируйте из Credentials этого клиента
   app:
     client-id: marketplace-backend          # клиент для входа пользователей
 server:

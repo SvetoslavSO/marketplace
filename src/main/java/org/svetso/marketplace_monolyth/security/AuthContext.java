@@ -5,8 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
-import org.svetso.marketplace_monolyth.auth.entity.User;
-import org.svetso.marketplace_monolyth.auth.repository.UserRepository;
+import org.svetso.marketplace_monolyth.user.entity.User;
+import org.svetso.marketplace_monolyth.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;

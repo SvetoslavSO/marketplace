@@ -72,7 +72,7 @@ public class KeycloakTokenManager {
             this.expiresAt = Instant.now().plusSeconds(expiresIn - 30);
         } catch (HttpClientErrorException e) {
             log.error("Keycloak error: {}", e.getResponseBodyAsString());
-            throw new UnauthorizedException("Refresh token expired");
+            throw new UnauthorizedException("Failed to get admin token from Keycloak");
         }
     }
 }

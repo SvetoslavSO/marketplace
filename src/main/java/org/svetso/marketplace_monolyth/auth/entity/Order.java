@@ -2,19 +2,22 @@ package org.svetso.marketplace_monolyth.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.svetso.marketplace_monolyth.BaseEntity;
+import org.svetso.marketplace_monolyth.user.entity.User;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +34,4 @@ public class Order {
     private String status;
 
     private BigDecimal totalAmount;
-
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    private void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 }

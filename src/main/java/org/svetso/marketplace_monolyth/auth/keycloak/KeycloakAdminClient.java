@@ -8,13 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.svetso.marketplace_monolyth.auth.dto.RegisterRequest;
-import org.svetso.marketplace_monolyth.exceptions.BadRequestException;
 import org.svetso.marketplace_monolyth.exceptions.KeycloakException;
 import org.svetso.marketplace_monolyth.exceptions.UnauthorizedException;
 
 import java.util.List;
 import java.util.Map;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -78,7 +76,7 @@ public class KeycloakAdminClient {
     }
 
     private String getClientUuid(String clientId) {
-
+        log.info("Searching Keycloak client: {}", clientId);
         String url = serverUrl + "/admin/realms/" + realm +
                 "/clients?clientId=" + clientId;
 
@@ -86,7 +84,13 @@ public class KeycloakAdminClient {
                 restTemplate.exchange(url, HttpMethod.GET,
                         new HttpEntity<>(authHeaders()), List.class);
 
-        Map map = (Map) response.getBody().get(0);
+        List body = response.getBody();
+
+        if (body == null || body.isEmpty()) {
+            throw new KeycloakException("Client not found: " + clientId);
+        }
+
+        Map map = (Map) body.get(0);
         return (String) map.get("id");
     }
 
