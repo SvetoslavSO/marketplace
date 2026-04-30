@@ -36,5 +36,13 @@ public class CompanyMember {
 
     public Long getCompanyId() { return companyId; }
 
+    public boolean isOwnerOrHr() {
+        return ( role == CompanyRole.HR || role == CompanyRole.OWNER);
+    }
+
+    public void updateDetails(CompanyRole role) {
+        this.role = role;
+    }
+
     public boolean isHr() { return role == CompanyRole.HR; }
 }

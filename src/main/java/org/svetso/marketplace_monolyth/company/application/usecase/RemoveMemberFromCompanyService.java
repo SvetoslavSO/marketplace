@@ -7,8 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.company.application.dto.command.RemoveCompanyMemberCommand;
 import org.svetso.marketplace_monolyth.company.application.port.in.RemoveMemberFromCompanyUseCase;
 import org.svetso.marketplace_monolyth.company.application.port.out.CompanyMemberRepository;
-import org.svetso.marketplace_monolyth.company.application.port.out.CompanyRepository;
-import org.svetso.marketplace_monolyth.company.domain.model.Company;
 import org.svetso.marketplace_monolyth.company.domain.model.CompanyMember;
 import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
 
@@ -26,7 +24,7 @@ public class RemoveMemberFromCompanyService implements RemoveMemberFromCompanyUs
                 command.companyId()
         );
 
-        if (!(companyMember.isOwner() || companyMember.isHr())) {
+        if (!companyMember.isOwnerOrHr()) {
             throw new ForbiddenException("Only owner or hr can remove members");
         }
 

@@ -9,6 +9,7 @@ import org.svetso.marketplace_monolyth.company.application.port.in.AddMemberToCo
 import org.svetso.marketplace_monolyth.company.application.port.out.CompanyMemberRepository;
 import org.svetso.marketplace_monolyth.company.domain.model.CompanyMember;
 import org.svetso.marketplace_monolyth.exceptions.BadRequestException;
+import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
 
 @Service
 @Slf4j
@@ -21,6 +22,15 @@ public class AddMemberToCompanyService implements AddMemberToCompanyUseCase {
         log.info("Attempt to add member with id {} in company {}",
                 addMemberCommand.userId(),
                 addMemberCommand.companyId());
+
+        CompanyMember requester = companyMemberRepository.getCompanyMemberByUserIdAndCompanyId(
+                addMemberCommand.requesterId(),
+                addMemberCommand.companyId()
+        );
+
+        if (!requester.isOwnerOrHr()) {
+            throw new ForbiddenException("only owner or hr can add members to company");
+        }
 
         if (companyMemberRepository.existsByUserIdAndCompanyIdAndRole(
                 addMemberCommand.userId(),
