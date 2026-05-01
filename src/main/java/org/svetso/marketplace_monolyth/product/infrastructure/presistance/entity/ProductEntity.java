@@ -1,13 +1,11 @@
-package org.svetso.marketplace_monolyth.product.entity;
+package org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.svetso.marketplace_monolyth.BaseEntity;
-import org.svetso.marketplace_monolyth.auth.entity.Category;
-import org.svetso.marketplace_monolyth.user.entity.User;
+import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 
 import java.math.BigDecimal;
 
@@ -17,7 +15,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends BaseEntity {
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,10 +33,13 @@ public class Product extends BaseEntity {
     private Integer stock = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity category;
+
+    @Column(name = "seller_id", nullable = false)
+    private Long sellerId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "seller_type", nullable = false)
+    private SellerType sellerType;
 }

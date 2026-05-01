@@ -15,5 +15,5 @@ public interface JpaCompanyMemberRepository extends JpaRepository<CompanyMemberE
     Optional<List<CompanyMemberEntity>> findCompanyMemberEntitiesByUserId(Long userId);
     Optional<CompanyMemberEntity> findCompanyMemberEntityByUserIdAndCompanyId(Long userId, Long companyId);
     boolean existsByUserIdAndCompanyIdAndRole(Long userId, Long companyId, CompanyRole role);
-//    boolean existsByUserIdAndCompanyId(Long userId, Long companyId);
+    boolean existsByUserIdAndCompanyId(Long userId, Long companyId);
 }

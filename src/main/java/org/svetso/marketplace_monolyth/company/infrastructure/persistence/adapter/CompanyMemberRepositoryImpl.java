@@ -48,6 +48,11 @@ public class CompanyMemberRepositoryImpl implements CompanyMemberRepository {
     }
 
     @Override
+    public boolean existsByUserIdAndCompanyId(Long userId, Long companyId) {
+        return jpaCompanyMemberRepository.existsByUserIdAndCompanyId(userId, companyId);
+    }
+
+    @Override
     public void deleteByUserIdAndCompanyId(Long userId, Long companyId) {
         jpaCompanyMemberRepository.deleteByCompanyIdAndUserId(companyId, userId);
     }

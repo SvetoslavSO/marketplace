@@ -1,11 +1,5 @@
 package org.svetso.marketplace_monolyth.company.domain.model;
 
-import org.svetso.marketplace_monolyth.exceptions.BadRequestException;
-import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Company {
     private Long id;
     private String name;

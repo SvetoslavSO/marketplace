@@ -1,4 +1,4 @@
-package org.svetso.marketplace_monolyth.product.controllers;
+package org.svetso.marketplace_monolyth.product.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,9 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ProductService productService;
     private final AuthContext authContext;
 
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('user')")
     public ProductDTO create(@Valid @RequestBody CreateProductDTO request) {
         CurrentUser user = authContext.getCurrentUser();
         return productService.createProduct(request, user.userId());
@@ -54,7 +52,6 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('user')")
     public ProductDTO updateProduct(
             @PathVariable Long id,
             @RequestBody UpdateProductDTO newProduct

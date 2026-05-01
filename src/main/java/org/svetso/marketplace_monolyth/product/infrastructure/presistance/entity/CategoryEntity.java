@@ -1,11 +1,10 @@
-package org.svetso.marketplace_monolyth.auth.entity;
+package org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.svetso.marketplace_monolyth.BaseEntity;
 
 @Entity
 @Table(name = "categories")
@@ -13,7 +12,7 @@ import org.svetso.marketplace_monolyth.BaseEntity;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends BaseEntity {
+public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +22,5 @@ public class Category extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private Category parent;
+    private CategoryEntity parent;
 }

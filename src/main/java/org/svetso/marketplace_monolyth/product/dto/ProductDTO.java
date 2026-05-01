@@ -3,7 +3,6 @@ package org.svetso.marketplace_monolyth.product.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.svetso.marketplace_monolyth.auth.entity.Category;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

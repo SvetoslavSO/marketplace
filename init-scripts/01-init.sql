@@ -32,10 +32,14 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT,
     price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
     stock INTEGER DEFAULT 0 CHECK (stock >= 0),
-    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id BIGINT REFERENCES categories(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    seller_id BIGINT NOT NULL,
+    seller_type VARCHAR(20) NOT NULL,
+
+    CONSTRAINT check_seller_type
+    CHECK (seller_type IN ('USER', 'COMPANY'))
 );
 
 CREATE TABLE IF NOT EXISTS addresses (
