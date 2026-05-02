@@ -9,6 +9,8 @@ import org.svetso.marketplace_monolyth.product.infrastructure.mapper.CategoryMap
 import org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity.CategoryEntity;
 import org.svetso.marketplace_monolyth.product.infrastructure.presistance.repository.JpaCategoryRepository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class CategoryRepositoryImpl implements CategoryRepository {
@@ -48,11 +50,23 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         return categoryMapper.toDomain(entity);
     }
 
-//    @Override
-//    public Category update(Category category) {
-//        CategoryEntity entity = jpaCategoryRepository.findById(category.getId())
-//                .orElseThrow(() -> new NotFoundException("Category not found by id"));
-//
-//
-//    }
+    @Override
+    public void delete(Category category) {
+        CategoryEntity entity = jpaCategoryRepository.findById(category.getId())
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+
+        CategoryEntity parentEntity = null;
+
+        if (entity.getParent() != null) {
+            parentEntity = entity.getParent();
+        }
+
+        List<CategoryEntity> childEntities = jpaCategoryRepository.findCategoriesByParentId(category.getId());
+
+        for (CategoryEntity childEntity: childEntities) {
+            childEntity.setParent(parentEntity);
+        }
+
+        jpaCategoryRepository.delete(entity);
+    }
 }

@@ -53,6 +53,11 @@ public class CompanyMemberRepositoryImpl implements CompanyMemberRepository {
     }
 
     @Override
+    public void deleteAllByCompanyId(Long companyId) {
+        jpaCompanyMemberRepository.deleteAllByCompanyId(companyId);
+    }
+
+    @Override
     public void deleteByUserIdAndCompanyId(Long userId, Long companyId) {
         jpaCompanyMemberRepository.deleteByCompanyIdAndUserId(companyId, userId);
     }

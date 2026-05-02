@@ -18,4 +18,5 @@ public interface CompanyMemberRepository {
     CompanyMember save(CompanyMember companyMember);
     List<CompanyMember> getCompanyMembersByCompanyId(Long companyId);
     boolean existsByUserIdAndCompanyId(Long userId, Long companyId);
+    void deleteAllByCompanyId(Long companyId);
 }

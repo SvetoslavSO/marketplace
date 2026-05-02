@@ -1,7 +1,6 @@
 package org.svetso.marketplace_monolyth.company.infrastructure.persistence.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.svetso.marketplace_monolyth.company.infrastructure.persistence.entity.CompanyEntity;
 
 import java.util.List;

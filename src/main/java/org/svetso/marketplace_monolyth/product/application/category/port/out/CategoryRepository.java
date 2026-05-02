@@ -7,4 +7,5 @@ public interface CategoryRepository {
     Category findById(Long id);
     Category findByName(String name);
     Category save(Category category);
+    void delete(Category category);
 }

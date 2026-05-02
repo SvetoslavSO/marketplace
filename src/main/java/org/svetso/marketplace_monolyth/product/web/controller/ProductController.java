@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.svetso.marketplace_monolyth.product.dto.CreateProductDTO;
 import org.svetso.marketplace_monolyth.product.dto.ProductDTO;
 import org.svetso.marketplace_monolyth.product.dto.UpdateProductDTO;
-import org.svetso.marketplace_monolyth.product.services.ProductService;
 import org.svetso.marketplace_monolyth.security.AuthContext;
 import org.svetso.marketplace_monolyth.security.CurrentUser;
 

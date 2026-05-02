@@ -22,6 +22,10 @@ public class Category {
     public Long getParentId() {
         return parentId;
     }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
 }
 
 

@@ -39,18 +39,7 @@ public class DeleteCompanyService implements DeleteCompanyUseCase {
         if (!isOwner) {
             throw new ForbiddenException("Only owner can delete company");
         }
-        deleteMembersFromCompany(command.companyId());
+        companyMemberRepository.deleteAllByCompanyId(command.companyId());
         companyRepository.delete(command.companyId());
-    }
-
-    private void deleteMembersFromCompany(Long companyId) {
-        List<CompanyMember> members = companyMemberRepository.getCompanyMembersByCompanyId(companyId);
-
-        for (CompanyMember member: members) {
-            companyMemberRepository.deleteByUserIdAndCompanyId(
-                    member.getUserId(),
-                    member.getCompanyId()
-            );
-        }
     }
 }
