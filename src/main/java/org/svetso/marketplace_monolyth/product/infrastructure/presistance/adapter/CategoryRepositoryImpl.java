@@ -16,6 +16,23 @@ import java.util.List;
 public class CategoryRepositoryImpl implements CategoryRepository {
 
     private final JpaCategoryRepository jpaCategoryRepository;
+
+    @Override
+    public List<Category> findAllParents(Long id) {
+        return jpaCategoryRepository.findAllParents(id)
+                .stream()
+                .map(categoryMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Category> getCategoryTree() {
+        return jpaCategoryRepository.findAllTree()
+                .stream()
+                .map(categoryMapper::toDomain)
+                .toList();
+    }
+
     private final CategoryMapper categoryMapper;
 
     @Override
@@ -68,5 +85,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         }
 
         jpaCategoryRepository.delete(entity);
+    }
+
+    @Override
+    public List<Long> findAllDescendantIds(Long categoryId) {
+        return jpaCategoryRepository.findAllDescendantIds(categoryId);
     }
 }

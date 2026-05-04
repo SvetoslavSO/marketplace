@@ -7,27 +7,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.company.application.dto.command.CheckMemberInCompanyCommand;
 import org.svetso.marketplace_monolyth.company.application.port.in.CheckMemberInCompanyUseCase;
 import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
-import org.svetso.marketplace_monolyth.product.application.product.dto.command.UpdateProductCommand;
-import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductDto;
-import org.svetso.marketplace_monolyth.product.application.product.mapper.ProductDtoMapper;
-import org.svetso.marketplace_monolyth.product.application.product.port.in.UpdateProductUseCase;
+import org.svetso.marketplace_monolyth.product.application.product.dto.command.DeleteProductCommand;
+import org.svetso.marketplace_monolyth.product.application.product.port.in.DeleteProductUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
-@RequiredArgsConstructor
 @Transactional
-public class UpdateProductService implements UpdateProductUseCase {
+public class DeleteProductService implements DeleteProductUseCase {
 
     private final ProductRepository productRepository;
     private final CheckMemberInCompanyUseCase checkMemberInCompanyUseCase;
-    private final ProductDtoMapper productDtoMapper;
 
     @Override
-    public ProductDto execute(UpdateProductCommand command) {
-        log.info("Attempt to update product with id {}", command.productId());
+    public void execute(DeleteProductCommand command) {
+        log.info("Attempt to delete product with id {}", command.productId());
 
         Product product = productRepository.findById(command.productId());
 
@@ -48,18 +45,6 @@ public class UpdateProductService implements UpdateProductUseCase {
             }
         }
 
-        product.updateDetails(
-                command.name(),
-                command.description(),
-                command.price(),
-                command.stock(),
-                command.categoryId()
-        );
-
-        Product saved = productRepository.save(product);
-
-        log.info("Product updated {}", saved.getName());
-
-        return productDtoMapper.productToDto(saved);
+        productRepository.delete(product);
     }
 }

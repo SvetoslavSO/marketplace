@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.svetso.marketplace_monolyth.company.application.dto.command.AddMemberCommand;
 import org.svetso.marketplace_monolyth.company.application.dto.command.RemoveCompanyMemberCommand;
 import org.svetso.marketplace_monolyth.company.application.dto.command.UpdateCompanyMemberCommand;
+import org.svetso.marketplace_monolyth.company.application.dto.response.CompanyMemberDto;
 import org.svetso.marketplace_monolyth.company.application.port.in.AddMemberToCompanyUseCase;
 import org.svetso.marketplace_monolyth.company.application.port.in.RemoveMemberFromCompanyUseCase;
 import org.svetso.marketplace_monolyth.company.application.port.in.UpdateCompanyMemberUseCase;
@@ -58,7 +59,7 @@ public class CompanyEmployeeController {
                 request.companyId(),
                 request.role()
         );
-        CompanyMember member = updateCompanyMemberUseCase.execute(command);
+        CompanyMemberDto member = updateCompanyMemberUseCase.execute(command);
         return ResponseEntity.ok().body(member);
     }
 }
