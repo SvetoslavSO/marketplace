@@ -7,9 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.company.application.dto.command.CheckMemberInCompanyCommand;
 import org.svetso.marketplace_monolyth.company.application.port.in.CheckMemberInCompanyUseCase;
 import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
+import org.svetso.marketplace_monolyth.product.application.category.mapper.CategoryDtoMapper;
+import org.svetso.marketplace_monolyth.product.application.category.port.in.GetCategoryUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.dto.command.DeleteProductCommand;
 import org.svetso.marketplace_monolyth.product.application.product.port.in.DeleteProductUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
+import org.svetso.marketplace_monolyth.product.domain.model.Category;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 
@@ -21,6 +24,8 @@ public class DeleteProductService implements DeleteProductUseCase {
 
     private final ProductRepository productRepository;
     private final CheckMemberInCompanyUseCase checkMemberInCompanyUseCase;
+    private final GetCategoryUseCase getCategoryUseCase;
+    private final CategoryDtoMapper categoryDtoMapper;
 
     @Override
     public void execute(DeleteProductCommand command) {
@@ -45,6 +50,10 @@ public class DeleteProductService implements DeleteProductUseCase {
             }
         }
 
-        productRepository.delete(product);
+        Category category = categoryDtoMapper.dtoToCategory(
+                getCategoryUseCase.execute(product.getCategoryId())
+        );
+
+        productRepository.delete(product, category);
     }
 }

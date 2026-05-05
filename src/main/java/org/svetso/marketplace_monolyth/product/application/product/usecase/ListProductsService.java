@@ -3,6 +3,8 @@ package org.svetso.marketplace_monolyth.product.application.product.usecase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductDto;
@@ -24,6 +26,8 @@ public class ListProductsService implements ListProductsUseCase {
 
     @Override
     public List<ProductDto> execute(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
 
         Page<Product> products = productRepository.findAll(page, size);
 

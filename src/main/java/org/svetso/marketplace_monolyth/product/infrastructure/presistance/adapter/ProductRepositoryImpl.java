@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.svetso.marketplace_monolyth.exceptions.NotFoundException;
-import org.svetso.marketplace_monolyth.product.application.category.mapper.CategoryDtoMapper;
-import org.svetso.marketplace_monolyth.product.application.category.port.in.GetCategoryUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
 import org.svetso.marketplace_monolyth.product.domain.model.Category;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
@@ -24,8 +22,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private final JpaProductRepository jpaProductRepository;
     private final ProductMapper productMapper;
-    private final GetCategoryUseCase getCategoryUseCase;
-    private final CategoryDtoMapper categoryDtoMapper;
 
     @Override
     public Product findById(Long id) {
@@ -43,16 +39,16 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product save(Product product) {
-        Category category = categoryDtoMapper.dtoToCategory(getCategoryUseCase.execute(product.getCategoryId()));
+    public Product save(Product product, Category category) {
         return productMapper.toDomain(jpaProductRepository.save(productMapper.toEntity(product, category)));
     }
 
     @Override
-    public void delete(Product product) {
+    public void delete(Product product, Category category) {
         ProductEntity entity = productMapper.toEntity(
                 product,
-                categoryDtoMapper.dtoToCategory(getCategoryUseCase.execute(product.getCategoryId())));
+                category
+        );
         jpaProductRepository.delete(entity);
     }
 

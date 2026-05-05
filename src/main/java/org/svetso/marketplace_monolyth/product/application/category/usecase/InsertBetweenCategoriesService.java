@@ -25,16 +25,18 @@ public class InsertBetweenCategoriesService implements InsertBetweenCategoriesUs
 
     @Override
     public CategoryDto execute(InsertCategoryCommand command) {
-        Category categoryToInsert = categoryRepository.findById(command.categoryToInsertId());
+
+        Category categoryToInsert = new Category(
+                null,
+                command.name(),
+                command.parentId()
+        );
+
+        Category saved = categoryRepository.save(categoryToInsert);
 
         List<Category> categories = command.categoriesId().stream()
                 .map(categoryRepository::findById)
                 .toList();
-
-        Long parentId = categories.getFirst().getParentId();
-        categoryToInsert.setParentId(parentId);
-
-        Category saved = categoryRepository.save(categoryToInsert);
 
         for (Category category : categories) {
             category.setParentId(saved.getId());

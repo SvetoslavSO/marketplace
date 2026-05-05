@@ -8,6 +8,7 @@ import org.svetso.marketplace_monolyth.product.application.category.port.in.*;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 import org.svetso.marketplace_monolyth.product.web.dto.request.CategoryRequest;
 import org.svetso.marketplace_monolyth.product.web.dto.request.CreateCategoryRequest;
+import org.svetso.marketplace_monolyth.product.web.dto.request.InsertCategoryRequest;
 import org.svetso.marketplace_monolyth.product.web.dto.request.UpdateProductRequest;
 import org.svetso.marketplace_monolyth.product.web.dto.response.CategoryResponse;
 import org.svetso.marketplace_monolyth.product.web.dto.response.ProductResponse;
@@ -69,13 +70,21 @@ public class CategoryController {
                 .toList();
     }
 
-    @PutMapping("/insertCategory/{id}")
-    public CategoryResponse insertCategory(@PathVariable Long id, List<Long> categoriesIdList) {
+    @PostMapping("/insert")
+    public CategoryResponse insertCategory(
+            @RequestBody InsertCategoryRequest request
+    ) {
+
         Long userId = authContext.getCurrentUser().userId();
 
         return webResponseCategoryMapper.dtoToResponse(
                 insertBetweenCategoriesUseCase.execute(
-                    webRequestCategoryMapper.requestToInsertCategoryCommand(userId, id, categoriesIdList)
+                        webRequestCategoryMapper.requestToInsertCategoryCommand(
+                                userId,
+                                request.name(),
+                                request.parentId(),
+                                request.childrenIds()
+                        )
                 )
         );
     }

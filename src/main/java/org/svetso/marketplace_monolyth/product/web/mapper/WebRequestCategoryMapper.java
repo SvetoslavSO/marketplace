@@ -19,9 +19,10 @@ public class WebRequestCategoryMapper {
         );
     }
 
-    public InsertCategoryCommand requestToInsertCategoryCommand(Long userId, Long id, List<Long> categoriesIdsList) {
+    public InsertCategoryCommand requestToInsertCategoryCommand(Long userId, String name, Long id, List<Long> categoriesIdsList) {
         return new InsertCategoryCommand(
                 userId,
+                name,
                 id,
                 categoriesIdsList
         );

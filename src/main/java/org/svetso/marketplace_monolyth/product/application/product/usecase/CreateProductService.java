@@ -8,11 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.company.application.dto.command.CheckMemberInCompanyCommand;
 import org.svetso.marketplace_monolyth.company.application.port.in.CheckMemberInCompanyUseCase;
 import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
+import org.svetso.marketplace_monolyth.product.application.category.mapper.CategoryDtoMapper;
+import org.svetso.marketplace_monolyth.product.application.category.port.in.GetCategoryUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.dto.command.CreateProductCommand;
 import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductDto;
 import org.svetso.marketplace_monolyth.product.application.product.mapper.ProductDtoMapper;
 import org.svetso.marketplace_monolyth.product.application.product.port.in.CreateProductUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
+import org.svetso.marketplace_monolyth.product.domain.model.Category;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 
@@ -24,6 +27,8 @@ public class CreateProductService implements CreateProductUseCase {
 
     private final ProductRepository productRepository;
     private final CheckMemberInCompanyUseCase checkMemberInCompanyUseCase;
+    private final GetCategoryUseCase getCategoryUseCase;
+    private final CategoryDtoMapper categoryDtoMapper;
     private final ProductDtoMapper productDtoMapper;
 
     @Override
@@ -39,6 +44,9 @@ public class CreateProductService implements CreateProductUseCase {
             }
         }
 
+
+        Category category = categoryDtoMapper.dtoToCategory(getCategoryUseCase.execute(command.categoryId()));
+
         Product product = productDtoMapper.dtoToProduct(
                 new ProductDto(
                         null,
@@ -46,12 +54,12 @@ public class CreateProductService implements CreateProductUseCase {
                         command.description(),
                         command.price(),
                         command.stock(),
-                        command.categoryId(),
+                        category.getId(),
                         command.sellerId(),
                         command.sellerType()
                 )
         );
-
-        return productDtoMapper.productToDto(productRepository.save(product));
+        
+        return productDtoMapper.productToDto(productRepository.save(product, category));
     }
 }

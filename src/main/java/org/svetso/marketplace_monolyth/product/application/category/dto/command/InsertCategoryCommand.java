@@ -4,6 +4,7 @@ import java.util.List;
 
 public record InsertCategoryCommand(
         Long requesterId,
-        Long categoryToInsertId,
+        String name,
+        Long parentId,
         List<Long> categoriesId
 ) {}
