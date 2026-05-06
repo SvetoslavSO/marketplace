@@ -1,9 +1,7 @@
 package org.svetso.marketplace_monolyth.product.application.product.port.in;
 
-import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductDto;
-
-import java.util.List;
+import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductPageDto;
 
 public interface ListProductsByCategoryUseCase {
-    List<ProductDto> execute(Long categoryId);
+    ProductPageDto execute(Long categoryId, int page, int size);
 }

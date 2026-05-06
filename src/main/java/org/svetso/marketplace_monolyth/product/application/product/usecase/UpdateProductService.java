@@ -7,14 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.company.application.dto.command.CheckMemberInCompanyCommand;
 import org.svetso.marketplace_monolyth.company.application.port.in.CheckMemberInCompanyUseCase;
 import org.svetso.marketplace_monolyth.exceptions.ForbiddenException;
-import org.svetso.marketplace_monolyth.product.application.category.mapper.CategoryDtoMapper;
 import org.svetso.marketplace_monolyth.product.application.category.port.in.GetCategoryUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.dto.command.UpdateProductCommand;
 import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductDto;
 import org.svetso.marketplace_monolyth.product.application.product.mapper.ProductDtoMapper;
 import org.svetso.marketplace_monolyth.product.application.product.port.in.UpdateProductUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
-import org.svetso.marketplace_monolyth.product.domain.model.Category;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 
@@ -27,7 +25,6 @@ public class UpdateProductService implements UpdateProductUseCase {
     private final ProductRepository productRepository;
     private final CheckMemberInCompanyUseCase checkMemberInCompanyUseCase;
     private final GetCategoryUseCase getCategoryUseCase;
-    private final CategoryDtoMapper categoryDtoMapper;
     private final ProductDtoMapper productDtoMapper;
 
     @Override
@@ -61,8 +58,9 @@ public class UpdateProductService implements UpdateProductUseCase {
                 command.categoryId()
         );
 
-        Category category = categoryDtoMapper.dtoToCategory(getCategoryUseCase.execute(command.categoryId()));
-        Product saved = productRepository.save(product, category);
+        getCategoryUseCase.execute(command.categoryId());
+
+        Product saved = productRepository.save(product);
         
         log.info("Product updated {}", saved.getName());
 

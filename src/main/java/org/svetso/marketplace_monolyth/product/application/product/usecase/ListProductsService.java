@@ -7,7 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.svetso.marketplace_monolyth.exceptions.BadRequestException;
 import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductDto;
+import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductPageDto;
 import org.svetso.marketplace_monolyth.product.application.product.mapper.ProductDtoMapper;
 import org.svetso.marketplace_monolyth.product.application.product.port.in.ListProductsUseCase;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
@@ -25,22 +27,24 @@ public class ListProductsService implements ListProductsUseCase {
     private final ProductDtoMapper productDtoMapper;
 
     @Override
-    public List<ProductDto> execute(int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        Page<Product> products = productRepository.findAll(page, size);
-
-        return products.stream()
+    public ProductPageDto execute(int page, int size) {
+        validatePagination(page, size);
+        Page<Product> productPage = productRepository.findAll(page, size);
+        List<ProductDto> items = productPage.getContent().stream()
                 .map(productDtoMapper::productToDto)
                 .toList();
+        return new ProductPageDto(
+                items,
+                productPage.getNumber(),
+                productPage.getSize(),
+                productPage.getTotalElements(),
+                productPage.getTotalPages(),
+                productPage.hasNext()
+        );
+    }
+
+    private void validatePagination(int page, int size) {
+        if (page < 0) throw new BadRequestException("page must be >= 0");
+        if (size <= 0 || size > 100) throw new BadRequestException("size must be between 1 and 100");
     }
 }
-
-//@Override
-//public List<ProductDto> execute() {
-//    return productRepository.findAll()
-//            .stream()
-//            .map(productDtoMapper::productToDto)
-//            .toList();
-//}

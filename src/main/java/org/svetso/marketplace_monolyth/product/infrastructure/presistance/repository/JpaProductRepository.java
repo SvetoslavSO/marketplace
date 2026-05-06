@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JpaProductRepository extends JpaRepository<ProductEntity, Long> {
-    Optional<List<ProductEntity>> findBySellerIdAndSellerType(Long sellerId, SellerType sellerType);
-    List<ProductEntity> findByCategoryIdIn(List<Long> categoryIds);
+//    Optional<List<ProductEntity>> findBySellerIdAndSellerType(Long sellerId, SellerType sellerType);
+    Page<ProductEntity> findBySellerIdAndSellerType(Long sellerId, SellerType sellerType, Pageable pageable);
+//    List<ProductEntity> findByCategoryIdIn(List<Long> categoryIds);
     Page<ProductEntity> findAll(Pageable pageable);
+    Page<ProductEntity> findByCategoryIdIn(List<Long> categoryIds, Pageable pageable);
+
 }

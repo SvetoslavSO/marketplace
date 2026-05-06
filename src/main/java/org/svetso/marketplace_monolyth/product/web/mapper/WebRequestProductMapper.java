@@ -5,9 +5,11 @@ import org.svetso.marketplace_monolyth.product.application.product.dto.command.C
 import org.svetso.marketplace_monolyth.product.application.product.dto.command.DeleteProductCommand;
 import org.svetso.marketplace_monolyth.product.application.product.dto.command.GetProductBySellerCommand;
 import org.svetso.marketplace_monolyth.product.application.product.dto.command.UpdateProductCommand;
+import org.svetso.marketplace_monolyth.product.application.product.dto.response.ProductPageDto;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 import org.svetso.marketplace_monolyth.product.web.dto.request.CreateProductRequest;
 import org.svetso.marketplace_monolyth.product.web.dto.request.UpdateProductRequest;
+import org.svetso.marketplace_monolyth.product.web.dto.response.ProductPageResponse;
 
 @Component
 public class WebRequestProductMapper {

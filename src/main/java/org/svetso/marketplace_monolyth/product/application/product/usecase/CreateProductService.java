@@ -2,7 +2,6 @@ package org.svetso.marketplace_monolyth.product.application.product.usecase;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.svetso.marketplace_monolyth.company.application.dto.command.CheckMemberInCompanyCommand;
@@ -60,6 +59,6 @@ public class CreateProductService implements CreateProductUseCase {
                 )
         );
         
-        return productDtoMapper.productToDto(productRepository.save(product, category));
+        return productDtoMapper.productToDto(productRepository.save(product));
     }
 }

@@ -7,11 +7,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.svetso.marketplace_monolyth.exceptions.NotFoundException;
 import org.svetso.marketplace_monolyth.product.application.product.port.out.ProductRepository;
-import org.svetso.marketplace_monolyth.product.domain.model.Category;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
 import org.svetso.marketplace_monolyth.product.domain.model.SellerType;
 import org.svetso.marketplace_monolyth.product.infrastructure.mapper.ProductMapper;
+import org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity.CategoryEntity;
 import org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity.ProductEntity;
+import org.svetso.marketplace_monolyth.product.infrastructure.presistance.repository.JpaCategoryRepository;
 import org.svetso.marketplace_monolyth.product.infrastructure.presistance.repository.JpaProductRepository;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final JpaProductRepository jpaProductRepository;
+    private final JpaCategoryRepository jpaCategoryRepository;
     private final ProductMapper productMapper;
 
     @Override
@@ -30,46 +32,36 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<Product> findBySellerIdAndSellerType(Long sellerId, SellerType sellerType) {
-        return jpaProductRepository.findBySellerIdAndSellerType(sellerId, sellerType)
-                .orElseThrow(() -> new NotFoundException("Seller does not have products"))
-                .stream()
-                .map(productMapper::toDomain)
-                .toList();
+    public Page<Product> findBySellerIdAndSellerType(Long sellerId, SellerType sellerType, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return jpaProductRepository.findBySellerIdAndSellerType(sellerId, sellerType, pageable)
+                .map(productMapper::toDomain);
     }
 
     @Override
-    public Product save(Product product, Category category) {
-        return productMapper.toDomain(jpaProductRepository.save(productMapper.toEntity(product, category)));
+    public Product save(Product product) {
+        CategoryEntity categoryRef = jpaCategoryRepository.getReferenceById(product.getCategoryId());
+        ProductEntity entity = productMapper.toEntity(product, categoryRef);
+        return productMapper.toDomain(jpaProductRepository.save(entity));
     }
 
     @Override
-    public void delete(Product product, Category category) {
-        ProductEntity entity = productMapper.toEntity(
-                product,
-                category
-        );
+    public void delete(Product product) {
+        CategoryEntity categoryRef = jpaCategoryRepository.getReferenceById(product.getCategoryId());
+        ProductEntity entity = productMapper.toEntity(product, categoryRef);
         jpaProductRepository.delete(entity);
+    }
+
+    @Override
+    public Page<Product> findByCategoryIds(List<Long> categoryIds, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return jpaProductRepository.findByCategoryIdIn(categoryIds, pageable)
+                .map(productMapper::toDomain);
     }
 
     @Override
     public Page<Product> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-
-        return jpaProductRepository.findAll(pageable)
-                .map(productMapper::toDomain);
-    }
-
-    @Override
-    public List<Product> findProductsByCategoryId(Long categoryId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Product> findByCategoryIds(List<Long> categoryIds) {
-        return jpaProductRepository.findByCategoryIdIn(categoryIds)
-                .stream()
-                .map(productMapper::toDomain)
-                .toList();
+        return jpaProductRepository.findAll(pageable).map(productMapper::toDomain);
     }
 }

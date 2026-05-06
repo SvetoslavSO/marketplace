@@ -11,6 +11,7 @@ import org.svetso.marketplace_monolyth.product.web.dto.request.CreateCategoryReq
 import org.svetso.marketplace_monolyth.product.web.dto.request.InsertCategoryRequest;
 import org.svetso.marketplace_monolyth.product.web.dto.request.UpdateProductRequest;
 import org.svetso.marketplace_monolyth.product.web.dto.response.CategoryResponse;
+import org.svetso.marketplace_monolyth.product.web.dto.response.ProductPageResponse;
 import org.svetso.marketplace_monolyth.product.web.dto.response.ProductResponse;
 import org.svetso.marketplace_monolyth.product.web.mapper.WebRequestCategoryMapper;
 import org.svetso.marketplace_monolyth.product.web.mapper.WebResponseCategoryMapper;
@@ -88,6 +89,4 @@ public class CategoryController {
                 )
         );
     }
-
-
 }

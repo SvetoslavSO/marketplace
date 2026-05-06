@@ -1,7 +1,6 @@
 package org.svetso.marketplace_monolyth.product.infrastructure.mapper;
 
 import org.springframework.stereotype.Component;
-import org.svetso.marketplace_monolyth.product.domain.model.Category;
 import org.svetso.marketplace_monolyth.product.domain.model.Product;
 import org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity.CategoryEntity;
 import org.svetso.marketplace_monolyth.product.infrastructure.presistance.entity.ProductEntity;
@@ -22,22 +21,16 @@ public class ProductMapper {
         );
     }
 
-    public ProductEntity toEntity(Product domain, Category category) {
-
-        CategoryEntity categoryEntity = new CategoryEntity();
-        categoryEntity.setId(category.getId());
-        categoryEntity.setParent(categoryEntity.getParent());
-        categoryEntity.setName(category.getName());
-
+    public ProductEntity toEntity(Product domain, CategoryEntity categoryRef) {
         return new ProductEntity(
-            domain.getId(),
-            domain.getName(),
-            domain.getDescription(),
-            domain.getPrice(),
-            domain.getStock(),
-            categoryEntity,
-            domain.getSellerId(),
-            domain.getSellerType()
+                domain.getId(),
+                domain.getName(),
+                domain.getDescription(),
+                domain.getPrice(),
+                domain.getStock(),
+                categoryRef,
+                domain.getSellerId(),
+                domain.getSellerType()
         );
     }
 
