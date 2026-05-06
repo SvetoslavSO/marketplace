@@ -130,7 +130,7 @@ public class ProductController {
         );
     }
 
-    @GetMapping("/{page}/{size}")
+    @GetMapping("page/{page}/{size}")
     public ProductPageResponse getPage(@PathVariable int page, @PathVariable int size) {
         return responseMapper.pageDtoToResponse(listProductsUseCase.execute(page, size));
     }

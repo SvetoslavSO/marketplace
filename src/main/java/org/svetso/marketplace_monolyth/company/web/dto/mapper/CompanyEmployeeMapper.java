@@ -24,11 +24,11 @@ public class CompanyEmployeeMapper {
         );
     }
 
-    public RemoveCompanyMemberCommand removeRequestToCommand(RemoveMemberRequest request, Long requesterId) {
+    public RemoveCompanyMemberCommand removeRequestToCommand(Long companyId, Long userId, Long requesterId) {
            return new RemoveCompanyMemberCommand(
                    requesterId,
-                   request.userId(),
-                   request.companyId()
+                   userId,
+                   companyId
            );
     }
 

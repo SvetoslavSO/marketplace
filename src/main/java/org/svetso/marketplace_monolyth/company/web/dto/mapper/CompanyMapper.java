@@ -21,9 +21,9 @@ public class CompanyMapper {
         );
     }
 
-    public UpdateCompanyCommand updateRequestToCommand(UpdateCompanyRequest request, Long updaterId) {
+    public UpdateCompanyCommand updateRequestToCommand(UpdateCompanyRequest request, Long companyId, Long updaterId) {
         return new UpdateCompanyCommand(
-                request.companyId(),
+                companyId,
                 request.name(),
                 request.email(),
                 request.phone(),
